@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String     @id  @default(cuid())
+  email       String?    @unique
+  username    String?
+  password    String?
+  image       String?
+  blogs       Blog[]
+  likes       Like[]
+  comments    Comment[]
+  sentNotification  Notification[]  @relation("ActorNotifications")
+  receivedNotification  Notification[]  @relation("RecipientNotifications")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Blog {
+  id            String     @id   @default(cuid())
+  title         String
+  content       String
+  image         String?
+  author        User       @relation(fields: [authorId], references: [id])
+  authorId      String
+  tags          Tag[]      @relation("BlogTags")
+  likes         Like[]
+  comments      Comment[]
+  notifications Notification[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Tag {
+  id          String     @id   @default(cuid())
+  tagName     String     @unique
+  blog        Blog[]     @relation("BlogTags")
+}
+
+model Like {
+  id         String    @id    @default(uuid())
+  author     User      @relation(fields: [authorId],references: [id])
+  authorId   String
+  blog       Blog      @relation(fields: [blogId], references: [id])
+  blogId     String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([authorId,blogId])
+}
+
+model Comment {
+  id         String    @id    @default(uuid())
+  content    String
+  author     User      @relation(fields: [authorId], references: [id])
+  authorId   String
+  blog       Blog      @relation(fields: [blogId], references: [id])
+  blogId     String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Notification {
+  id          String    @id    @default(uuid())
+  actor       User      @relation("ActorNotifications",fields: [actorId], references: [id])
+  actorId     String
+  recipient   User      @relation("RecipientNotifications",fields: [recipientId],references: [id])
+  recipientId  String
+  blog        Blog      @relation(fields: [blogId], references: [id])
+  blogId      String
+  message     String
+  read        Boolean
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
