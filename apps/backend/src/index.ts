@@ -3,6 +3,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { authMiddleware } from "./middleware/auth";
 import { prisma } from "@repo/db";
+import { blogRoutes } from "./routes/blogs/index";
 
 // Debug: Check if env variables are loaded
 console.log("NEXTAUTH_SECRET exists:", !!process.env.NEXTAUTH_SECRET);
@@ -13,6 +14,9 @@ const app = new Hono();
 app.get("/", (c) => {
   return c.text("Blog server is running..");
 });
+
+// blog routes
+app.route("/api/blogs",blogRoutes);
 
 // protected test route
 app.get("/api/protected", authMiddleware, async (c) => {
