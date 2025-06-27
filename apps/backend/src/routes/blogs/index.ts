@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 import { createBlogroutes } from "./create";
 import { readBlogRoutes } from "./read";
+import { updateBlogRoutes } from "./update";
+import { deleteBlogRoutes } from "./delete";
 
 const blogRoutes = new Hono();
 
@@ -19,5 +21,7 @@ blogRoutes.get("/test", async (c) => {
 
 blogRoutes.route("/",createBlogroutes);
 blogRoutes.route("/",readBlogRoutes);
+blogRoutes.route("/",updateBlogRoutes);
+blogRoutes.route("/",deleteBlogRoutes);
 
 export {blogRoutes};

@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { authMiddleware } from "./middleware/auth";
 import { prisma } from "@repo/db";
 import { blogRoutes } from "./routes/blogs/index";
+import { likesRouter } from "./routes/likes";
 
 // Debug: Check if env variables are loaded
 console.log("NEXTAUTH_SECRET exists:", !!process.env.NEXTAUTH_SECRET);
@@ -17,6 +18,9 @@ app.get("/", (c) => {
 
 // blog routes
 app.route("/api/blogs",blogRoutes);
+
+// like routes
+app.route("/api",likesRouter);
 
 // protected test route
 app.get("/api/protected", authMiddleware, async (c) => {
