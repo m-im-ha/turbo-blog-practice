@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { prisma } from "@repo/db";
-import { authMiddleware } from "../../middleware/auth";
 import { validateQuery } from "../../middleware/validation";
 import {
   PaginationInput,

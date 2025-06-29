@@ -83,3 +83,37 @@ export const paginationSchema = z.object({
 export type CreateBlogInput = z.infer<typeof createBlogSchema>;
 export type UpdateBlogInput = z.infer<typeof updateBlogSchema>;
 export type PaginationInput = z.infer<typeof paginationSchema>;
+
+// comment validation schema
+export const createCommentSchema = z.object({
+  content: z
+    .string()
+    .min(1, "comment cannot be empty")
+    .max(300, "comment must not exceed 300 characters")
+    .trim(),
+});
+
+export const updateCommentSchema = z.object({
+  content: z
+    .string()
+    .min(1, "comment cannot be empty")
+    .max(300, "comment must not exceed 300 characters")
+    .trim(),
+});
+
+export const commentPaginationSchema = z.object({
+  page: z
+    .string()
+    .optional()
+    .default("1")
+    .transform((val) => Math.max(1, parseInt(val) || 1)),
+  limit: z
+    .string()
+    .optional()
+    .default("1")
+    .transform((val) => Math.min(50, Math.max(1,parseInt(val) || 20))),
+});
+
+export type createCommentInput = z.infer<typeof createCommentSchema>;
+export type updateCommentInput = z.infer<typeof updateCommentSchema>;
+export type commentPagination = z.infer<typeof commentPaginationSchema>;

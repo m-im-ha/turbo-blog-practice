@@ -5,6 +5,7 @@ import { authMiddleware } from "./middleware/auth";
 import { prisma } from "@repo/db";
 import { blogRoutes } from "./routes/blogs/index";
 import { likesRouter } from "./routes/likes";
+import { commentRouter } from "./routes/comments";
 
 // Debug: Check if env variables are loaded
 console.log("NEXTAUTH_SECRET exists:", !!process.env.NEXTAUTH_SECRET);
@@ -20,7 +21,10 @@ app.get("/", (c) => {
 app.route("/api/blogs",blogRoutes);
 
 // like routes
-app.route("/api",likesRouter);
+app.route("/api/blog",likesRouter);
+
+// comments routes
+app.route("/api/blog",commentRouter);
 
 // protected test route
 app.get("/api/protected", authMiddleware, async (c) => {

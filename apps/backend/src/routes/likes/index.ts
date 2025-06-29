@@ -3,6 +3,6 @@ import { likeRoutes } from "./like";
 
 const likesRouter = new Hono();
 
-likesRouter.route("/blog",likeRoutes);
+likesRouter.route("/",likeRoutes);
 
 export {likesRouter};
