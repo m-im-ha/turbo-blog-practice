@@ -146,3 +146,25 @@ export const markNotificationReadSchema = z.object({
 
 export type NotificationPaginationInput = z.infer<typeof notificationPaginationSchema>;
 export type MarkNotificationReadInput = z.infer<typeof markNotificationReadSchema>;
+
+// User profile validation schemas
+export const updateUserProfileSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(30, "Username must not exceed 30 characters")
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      "Username can only contain letters, numbers, underscores, and hyphens"
+    )
+    .trim()
+    .optional(),
+
+  image: z
+    .string()
+    .url("Image must be a valid URL")
+    .optional()
+    .or(z.literal("")),
+});
+
+export type UpdateUserProfileInput = z.infer<typeof updateUserProfileSchema>;
