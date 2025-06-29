@@ -139,7 +139,7 @@ export const notificationPaginationSchema = z.object({
 
 export const markNotificationReadSchema = z.object({
   notificationIds: z
-    .array(z.string().cuid("Invalid notification ID"))
+    .array(z.string().uuid("Invalid notification ID"))
     .min(1, "At least one notification ID is required")
     .max(50, "Cannot mark more than 50 notifications at once"),
 });
