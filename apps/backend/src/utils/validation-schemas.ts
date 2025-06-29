@@ -117,3 +117,32 @@ export const commentPaginationSchema = z.object({
 export type createCommentInput = z.infer<typeof createCommentSchema>;
 export type updateCommentInput = z.infer<typeof updateCommentSchema>;
 export type commentPagination = z.infer<typeof commentPaginationSchema>;
+
+// notification validation schemas
+export const notificationPaginationSchema = z.object({
+  page: z
+    .string()
+    .optional()
+    .default("1")
+    .transform((val) => Math.max(1, parseInt(val) || 1)),
+  limit: z
+    .string()
+    .optional()
+    .default("20")
+    .transform((val) => Math.min(50, Math.max(1, parseInt(val) || 20))), // max 50 notifications per page
+  unreadOnly: z
+    .string()
+    .optional()
+    .transform((val) => val === "true")
+    .default("false"),
+});
+
+export const markNotificationReadSchema = z.object({
+  notificationIds: z
+    .array(z.string().cuid("Invalid notification ID"))
+    .min(1, "At least one notification ID is required")
+    .max(50, "Cannot mark more than 50 notifications at once"),
+});
+
+export type NotificationPaginationInput = z.infer<typeof notificationPaginationSchema>;
+export type MarkNotificationReadInput = z.infer<typeof markNotificationReadSchema>;

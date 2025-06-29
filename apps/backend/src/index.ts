@@ -6,6 +6,7 @@ import { prisma } from "@repo/db";
 import { blogRoutes } from "./routes/blogs/index";
 import { likesRouter } from "./routes/likes";
 import { commentRouter } from "./routes/comments";
+import { notificationRouter } from "./routes/notifications";
 
 // Debug: Check if env variables are loaded
 console.log("NEXTAUTH_SECRET exists:", !!process.env.NEXTAUTH_SECRET);
@@ -25,6 +26,9 @@ app.route("/api/blog",likesRouter);
 
 // comments routes
 app.route("/api/blog",commentRouter);
+
+// notifications routes
+app.route("/api/blog",notificationRouter);
 
 // protected test route
 app.get("/api/protected", authMiddleware, async (c) => {
