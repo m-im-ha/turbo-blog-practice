@@ -168,3 +168,36 @@ export const updateUserProfileSchema = z.object({
 });
 
 export type UpdateUserProfileInput = z.infer<typeof updateUserProfileSchema>;
+
+// Search and filter validation schemas
+export const searchBlogsSchema = z.object({
+  q: z.string().min(1, "Search query cannot be empty").trim().optional(),
+  page: z
+    .string()
+    .optional()
+    .default("1")
+    .transform((val) => Math.max(1, parseInt(val) || 1)),
+  limit: z
+    .string()
+    .optional()
+    .default("10")
+    .transform((val) => Math.min(20, Math.max(1, parseInt(val) || 10))),
+});
+
+export const filterBlogsSchema = z.object({
+  tag: z.string().min(1, "Tag name cannot be empty").trim().optional(),
+  author: z.string().min(1, "Author ID cannot be empty").trim().optional(),
+  page: z
+    .string()
+    .optional()
+    .default("1")
+    .transform((val) => Math.max(1, parseInt(val) || 1)),
+  limit: z
+    .string()
+    .optional()
+    .default("10")
+    .transform((val) => Math.min(20, Math.max(1, parseInt(val) || 10))),
+});
+
+export type SearchBlogInput = z.infer<typeof searchBlogsSchema>;
+export type FilterBlogInput = z.infer<typeof filterBlogsSchema>;

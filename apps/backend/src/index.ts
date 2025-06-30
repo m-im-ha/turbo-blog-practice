@@ -8,6 +8,7 @@ import { likesRouter } from "./routes/likes";
 import { commentRouter } from "./routes/comments";
 import { notificationRouter } from "./routes/notifications";
 import { userRouter } from "./routes/user";
+import { searchRouter } from "./routes/search";
 
 // Debug: Check if env variables are loaded
 console.log("NEXTAUTH_SECRET exists:", !!process.env.NEXTAUTH_SECRET);
@@ -22,6 +23,7 @@ app.get("/", (c) => {
 // blog routes
 app.route("/api/blogs", blogRoutes);
 
+
 // like routes
 app.route("/api/blog", likesRouter);
 
@@ -33,6 +35,9 @@ app.route("/api/blog", notificationRouter);
 
 // user routes
 app.route("/api/blog/user", userRouter);
+
+// search routes
+app.route("/api/search-blogs", searchRouter);
 
 // protected test route
 app.get("/api/protected", authMiddleware, async (c) => {
